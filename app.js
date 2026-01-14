@@ -28,7 +28,7 @@ app.use(cors({
 
 
 app.use(session({
-    mame:"sessionId", // cookie name
+    name:"sessionId", // cookie name
     secret: process.env.SESSION_SECRET, // should be in .env
     resave: false, // don’t save session if unmodified
     saveUninitialized: false, // don’t create empty sessions
@@ -37,8 +37,9 @@ app.use(session({
         collectionName: 'sessions', // optional
     }),
     cookie: {
-        // httpOnly: true, // client-side JS cannot access cookie
-        // secure: process.env.NODE_ENV === 'production', // HTTPS only in prod
+        httpOnly: true, // client-side JS cannot access cookie
+        secure: process.env.NODE_ENV === 'production', // HTTPS only in prod
+        sameSite:'none',
         maxAge: 24 * 60 * 60 * 1000 // 1 day in ms
     }
 }));
