@@ -25,7 +25,7 @@ app.use(cors({
     credentials:true
 }))
 
-
+app.set('trust proxy',1)
 
 app.use(session({
     name:"sessionId", // cookie name
@@ -39,7 +39,7 @@ app.use(session({
     cookie: {
         httpOnly: true, // client-side JS cannot access cookie
         secure: process.env.NODE_ENV === 'production', // HTTPS only in prod
-        sameSite:'none',
+        sameSite: process.env.NODE_ENV === 'production'?'none' :'lax',
         maxAge: 24 * 60 * 60 * 1000, // 1 day in ms
         path:'/'
     }
