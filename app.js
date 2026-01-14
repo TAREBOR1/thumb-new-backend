@@ -38,7 +38,7 @@ app.use(session({
     }),
     cookie: {
         httpOnly: true, // client-side JS cannot access cookie
-        secure: process.env.NODE_ENV === 'production', // HTTPS only in prod
+        secure: true, // HTTPS only in prod
         sameSite:'none',
         maxAge: 24 * 60 * 60 * 1000 // 1 day in ms
     }
