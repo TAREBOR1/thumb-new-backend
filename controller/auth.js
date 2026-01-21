@@ -34,15 +34,17 @@ exports.signup= async (req,res)=>{
     req.session.userId=user._id
     req.session.isLoggedIn=true
 
-    return res.json({
-        success:true,
-        message:"Account created successfully",
-        user:{
-            id:user._id,
-            name:user.name,
-            email:user.email
-        }
-    })
+    req.session.save(() => { 
+        return res.json({
+            success: true,
+            message: "Account created successfully",
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
+        });
+    });
 
  } catch (error) {
     res.status(500).json({
@@ -111,21 +113,29 @@ exports.logout =async (req, res) => {
 
 
 exports.verifyUser = async (req, res) => {
-  try {
-    const {userId}=req.session
-        const user= await User.findById(userId).select('-password')
-        if(!user){
-            return  res.status(500).json({
-        message:"unauthorised user",
-        success:false
-    }) 
+    try {
+        const { userId } = req.session;
+        const user = await User.findById(userId).select('-password');
+        
+        if (!user) {
+            return res.status(401).json({
+                message: "Unauthorized user",
+                success: false
+            });
         }
-
-    res.json({ user });
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-      success: false
-    });
-  }
+        
+        res.json({
+            success: true, // Add success field
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+            success: false
+        });
+    }
 };

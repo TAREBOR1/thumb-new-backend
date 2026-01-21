@@ -9,21 +9,17 @@ const userRoute = require('./route/user');
 
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true })); 
 
 
 
 app.use(cors({
-    origin:[process.env.CLIENT_URL],
-    methods:['GET','POST','PUT','DELETE'],
-    allowedHeaders:[
-        'Content-Type',
-        'Authorization',
-        'Cache-Control',
-        'Expires',
-        'Pragma'
-    ],
-    credentials:true
-}))
+    origin: process.env.CLIENT_URL,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    exposedHeaders: ['set-cookie']
+}));
 
 app.set('trust proxy',1)
 
@@ -41,7 +37,8 @@ app.use(session({
         secure: process.env.NODE_ENV === 'production', // HTTPS only in prod
         sameSite: process.env.NODE_ENV === 'production'?'none' :'lax',
         maxAge: 24 * 60 * 60 * 1000, // 1 day in ms
-        path:'/'
+
+
     }
 }));
 
