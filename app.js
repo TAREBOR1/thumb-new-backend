@@ -1,8 +1,6 @@
 const express = require('express')
 const app=express();
 const cors=require('cors');
-const MongoStore = require('connect-mongo').default;
-const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const authRoute = require('./route/auth');
 const thumbnailRoute = require('./route/thumbnail');
